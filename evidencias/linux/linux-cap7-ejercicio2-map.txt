@@ -1,0 +1,12 @@
+Origen: fs.readFileSync (primera lectura lógica desde archivo)
+lectura-1: 215.312ms
+Lectura 1: 209715200 bytes; entradas en Map: 1
+Origen: Map de Node.js (memoria administrada por el proceso)
+lectura-2: 0.048ms
+Lectura 2: 209715200 bytes; entradas en Map: 1
+Origen: Map de Node.js (memoria administrada por el proceso)
+lectura-3: 0.047ms
+Lectura 3: 209715200 bytes; entradas en Map: 1
+
+Map: caché explícita del programa, con referencias al contenido leído.
+Page cache: caché implícita del kernel Linux para bloques de archivos; puede beneficiar incluso lecturas que no usan este Map. Son mecanismos distintos.

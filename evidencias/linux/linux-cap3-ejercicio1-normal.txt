@@ -1,0 +1,5 @@
+Vigilante Linux iniciado. Umbral RAM: 80%. Ctrl+C para terminar.
+2026-10-02T00:22:57.517Z | RAM: 18.52% (793 MiB usados) | CPU: 0.00%
+2026-10-02T00:22:58.521Z | RAM: 18.52% (793 MiB usados) | CPU: 1.00%
+2026-10-02T00:22:59.523Z | RAM: 18.52% (793 MiB usados) | CPU: 1.49%
+2026-10-02T00:23:00.524Z | RAM: 18.52% (793 MiB usados) | CPU: 1.00%

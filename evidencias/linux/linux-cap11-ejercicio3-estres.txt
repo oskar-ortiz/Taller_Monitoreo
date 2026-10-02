@@ -1,0 +1,3 @@
+Objetos: 10000/10000 | uso RAM+swap: 22.00% | MemAvailable: 3341 MiB | SwapTotal: 0 MiB | SwapFree: 0 MiB
+
+Límite de seguridad alcanzado (5%). Memoria liberada; objetos: 0.

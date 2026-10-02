@@ -1,0 +1,4 @@
+drop_caches no ejecutado: requiere sudo y no se modifica el host del agente
+               total        used        free      shared  buff/cache   available
+Mem:           4.2Gi       724Mi       2.9Gi       0.0Ki       632Mi       3.3Gi
+Swap:             0B          0B          0B

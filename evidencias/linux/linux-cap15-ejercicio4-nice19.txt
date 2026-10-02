@@ -1,0 +1,2 @@
+PID 2443; prioridad solicitada 19; duración 2s.
+PID 2443 terminó: 2.000s, operaciones=6753959319.

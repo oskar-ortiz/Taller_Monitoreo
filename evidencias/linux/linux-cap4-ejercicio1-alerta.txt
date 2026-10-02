@@ -1,0 +1,7 @@
+Vigilante Linux iniciado. Umbral RAM: 0%. Ctrl+C para terminar.
+2026-10-02T00:23:01.511Z | RAM: 18.51% (793 MiB usados) | CPU: 0.00%
+ALERTA: RAM sobre 0%. Registro escrito en alerta_ram.txt
+2026-10-02T00:23:02.514Z | RAM: 18.51% (793 MiB usados) | CPU: 0.00%
+ALERTA: RAM sobre 0%. Registro escrito en alerta_ram.txt
+2026-10-02T00:23:03.515Z | RAM: 18.51% (793 MiB usados) | CPU: 1.00%
+ALERTA: RAM sobre 0%. Registro escrito en alerta_ram.txt

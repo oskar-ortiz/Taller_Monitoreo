@@ -1,0 +1,22 @@
+PID 2450; prioridad solicitada 19; duración 2s.
+    PID  NI PRI CLS COMMAND
+      1   0  19  TS sandbox-init
+    191   0  19  TS v0-supervise.sh
+    195   0  19  TS MainThread
+    253   0  19  TS MainThread
+    269   0  19  TS v0-supervise.sh
+    273   0  19  TS ttyd
+    311   0  19  TS pnpm-native
+    321   0  19  TS MainThread
+    328   0  19  TS v0-supervise.sh
+    333   0  19  TS bash
+    373   0  19  TS next-server (v1
+    406   0  19  TS MainThread
+    426   0  19  TS v0-supervise.sh
+    430   0  19  TS node
+    456   0  19  TS node
+   2345   0  19  TS sleep
+   2391   0  19  TS bash
+   2450  19   0  TS MainThread
+   2458   0  19  TS ps
+PID 2450 terminó: 2.000s, operaciones=6853892274.

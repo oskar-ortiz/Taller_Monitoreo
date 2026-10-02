@@ -10,25 +10,25 @@ La implementación Linux usa Node.js y las interfaces del kernel (`/proc`, `free
 
 `linux/ejercicio1-vigilante/vigilante.js` lee `MemTotal` y `MemAvailable` desde `/proc/meminfo`, calcula RAM usada y obtiene CPU mediante diferencias consecutivas de `/proc/stat`. Ejecutar `node vigilante.js 30` (umbral opcional; por defecto 80%). Las alertas se agregan a `alerta_ram.txt` con fecha ISO. Se detiene con Ctrl+C.
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap3-ejercicio1-normal.png]**
+> Evidencia real de consola (Amazon Linux): [`linux-cap3-ejercicio1-normal.txt`](evidencias/linux/linux-cap3-ejercicio1-normal.txt). Captura WSL2 Ubuntu pendiente.
 
 ### Ejercicio 2: caché del programa y page cache
 
 `linux/ejercicio2-cache/cache.js` usa un `Map`: la primera lectura usa `fs.readFileSync` y las siguientes recuperan el mismo contenido desde el Map, midiendo tiempos. El Map pertenece al proceso Node; la page cache la administra el kernel para bloques de archivos, por lo que son cachés distintas. El archivo de 200 MB es temporal y está ignorado.
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap7-ejercicio2-map.png]**
+> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap7-ejercicio2-map.txt]**
 
 ### Ejercicio 3: memoria y swap
 
 `linux/ejercicio3-estres/estres.js` agrega strings hasta un máximo de objetos o hasta un porcentaje seguro de RAM+swap usados. Muestra `MemAvailable`, `SwapTotal` y `SwapFree`, y libera el array al terminar. `vmstat` permite observar `si` (swap in) y `so` (swap out), pero WSL2 no necesariamente usará swap.
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap11-ejercicio3-estres.png]**
+> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap11-ejercicio3-estres.txt]**
 
 ### Ejercicio 4: prioridad y scheduling
 
 `linux/ejercicio4-prioridad/prioridad.js` ejecuta un cálculo CPU-bound por tiempo limitado, mide duración y solicita un nice entre -20 y 19 mediante `os.setPriority()`. `taskset -c 0` permite hacer competir dos instancias en un núcleo. Nice es un ajuste del scheduler normal/CFS; `chrt -f 99` usa SCHED_FIFO, una política de tiempo real distinta y normalmente privilegiada. El resultado depende del entorno y no es una garantía universal.
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap16-ejercicio4-scheduling.png]**
+> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap16-ejercicio4-scheduling.txt]**
 
 ### Comandos y evidencias
 
@@ -60,28 +60,28 @@ En conjunto, el ejercicio 1 observa contabilidad de memoria y CPU; el 2 contrast
 
 ## Evidencias
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap1-sistema-linux.png]**
+> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap1-sistema-linux.txt]**
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap2-proc-meminfo.png]**
+> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap2-proc-meminfo.txt]**
 
-Las capturas Linux todavía deben tomarse desde una sesión real de WSL2 Ubuntu; las pruebas disponibles en este entorno fueron ejecutadas en Amazon Linux y no se presentan como evidencia WSL2. Cuando cada archivo exista, estas referencias relativas funcionarán directamente:
+No se fabricaron capturas. Las pruebas disponibles fueron ejecutadas realmente en Amazon Linux 2023 con Node.js; los archivos `.txt` son salidas de consola y no se presentan como evidencia WSL2 Ubuntu. Las capturas PNG reales de WSL2 Ubuntu siguen pendientes. Las evidencias de consola disponibles son:
 
-- `linux-cap1-sistema-linux.png` — `uname -a` y `cat /etc/os-release`.
-- `linux-cap2-proc-meminfo.png` — `cat /proc/meminfo`.
-- `linux-cap3-ejercicio1-normal.png` — ejecución normal de `vigilante.js`.
-- `linux-cap4-ejercicio1-alerta.png` — alerta y contenido de `alerta_ram.txt`.
-- `linux-cap5-ejercicio2-free-antes.png` — `free -h` antes de la prueba.
-- `linux-cap6-ejercicio2-generacion.png` — generación temporal con `dd` (opcional).
-- `linux-cap7-ejercicio2-map.png` — lecturas `fs` y `Map` con tiempos.
-- `linux-cap8-ejercicio2-free-despues.png` — `free -h` después.
-- `linux-cap9-ejercicio2-drop-caches.png` — limpieza de page cache y `free -h`.
-- `linux-cap10-ejercicio3-free.png` — observación con `watch -n1 free -h`.
-- `linux-cap11-ejercicio3-estres.png` — ejecución controlada de `estres.js`.
-- `linux-cap12-ejercicio3-vmstat.png` — columnas `si` y `so` de `vmstat 1`.
-- `linux-cap13-ejercicio3-swap.png` — salida de `swapon --show`.
-- `linux-cap14-ejercicio3-htop.png` — proceso Node observado en `htop`.
-- `linux-cap15-ejercicio4-nice19.png` — ejecución con `nice 19`.
-- `linux-cap16-ejercicio4-scheduling.png` — `ps`, `top` o `htop` durante la comparación.
+- `linux-cap1-sistema-linux.txt` — `uname -a` y `cat /etc/os-release`.
+- `linux-cap2-proc-meminfo.txt` — `cat /proc/meminfo`.
+- `linux-cap3-ejercicio1-normal.txt` — ejecución normal de `vigilante.js`.
+- `linux-cap4-ejercicio1-alerta.txt` — alerta y contenido de `alerta_ram.txt`.
+- `linux-cap5-ejercicio2-free-antes.txt` — `free -h` antes de la prueba.
+- `linux-cap6-ejercicio2-generacion.txt` — generación temporal con `dd` (opcional).
+- `linux-cap7-ejercicio2-map.txt` — lecturas `fs` y `Map` con tiempos.
+- `linux-cap8-ejercicio2-free-despues.txt` — `free -h` después.
+- `linux-cap9-ejercicio2-drop-caches.txt` — limpieza de page cache y `free -h`.
+- `linux-cap10-ejercicio3-free.txt` — observación con `watch -n1 free -h`.
+- `linux-cap11-ejercicio3-estres.txt` — ejecución controlada de `estres.js`.
+- `linux-cap12-ejercicio3-vmstat.txt` — columnas `si` y `so` de `vmstat 1`.
+- `linux-cap13-ejercicio3-swap.txt` — salida de `swapon --show`.
+- `linux-cap14-ejercicio3-htop.txt` — proceso Node observado en `htop`.
+- `linux-cap15-ejercicio4-nice19.txt` — ejecución con `nice 19`.
+- `linux-cap16-ejercicio4-scheduling.txt` — `ps`, `top` o `htop` durante la comparación.
 
 ## Abrir desde VS Code en WSL2
 
@@ -100,7 +100,7 @@ Instala únicamente la extensión Remote - WSL si tu instalación de VS Code la 
 - Pruebas locales: realizadas en Amazon Linux con Node.js; no equivalen a una prueba WSL2 Ubuntu.
 - Evidencias reales WSL2: pendientes de tomar por el usuario.
 - Archivo temporal de 200 MB: eliminado después de la prueba.
-- Git: esta carpeta no tiene un repositorio configurado actualmente; no se ejecutaron comandos de inicialización ni publicación.
+- Git: remoto configurado como `https://github.com/oskar-ortiz/Taller_Monitoreo.git`; la publicación queda pendiente de la verificación final y autorización del push.
 
 > Para conocer el comando exacto y qué debe aparecer en cada captura, consulta `linux/COMANDOS_CAPTURAS.md`.
 
