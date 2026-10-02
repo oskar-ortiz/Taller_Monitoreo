@@ -63,3 +63,45 @@ En conjunto, el ejercicio 1 observa contabilidad de memoria y CPU; el 2 contrast
 > **[CAPTURA PENDIENTE: evidencias/linux/linux-cap1-sistema-linux.png]**
 
 > **[CAPTURA PENDIENTE: evidencias/linux/linux-cap2-proc-meminfo.png]**
+
+Las capturas Linux todavía deben tomarse desde una sesión real de WSL2 Ubuntu; las pruebas disponibles en este entorno fueron ejecutadas en Amazon Linux y no se presentan como evidencia WSL2. Cuando cada archivo exista, estas referencias relativas funcionarán directamente:
+
+- `linux-cap1-sistema-linux.png` — `uname -a` y `cat /etc/os-release`.
+- `linux-cap2-proc-meminfo.png` — `cat /proc/meminfo`.
+- `linux-cap3-ejercicio1-normal.png` — ejecución normal de `vigilante.js`.
+- `linux-cap4-ejercicio1-alerta.png` — alerta y contenido de `alerta_ram.txt`.
+- `linux-cap5-ejercicio2-free-antes.png` — `free -h` antes de la prueba.
+- `linux-cap6-ejercicio2-generacion.png` — generación temporal con `dd` (opcional).
+- `linux-cap7-ejercicio2-map.png` — lecturas `fs` y `Map` con tiempos.
+- `linux-cap8-ejercicio2-free-despues.png` — `free -h` después.
+- `linux-cap9-ejercicio2-drop-caches.png` — limpieza de page cache y `free -h`.
+- `linux-cap10-ejercicio3-free.png` — observación con `watch -n1 free -h`.
+- `linux-cap11-ejercicio3-estres.png` — ejecución controlada de `estres.js`.
+- `linux-cap12-ejercicio3-vmstat.png` — columnas `si` y `so` de `vmstat 1`.
+- `linux-cap13-ejercicio3-swap.png` — salida de `swapon --show`.
+- `linux-cap14-ejercicio3-htop.png` — proceso Node observado en `htop`.
+- `linux-cap15-ejercicio4-nice19.png` — ejecución con `nice 19`.
+- `linux-cap16-ejercicio4-scheduling.png` — `ps`, `top` o `htop` durante la comparación.
+
+## Abrir desde VS Code en WSL2
+
+Desde Ubuntu/WSL2, no desde PowerShell, abre la carpeta del proyecto y ejecuta:
+
+```bash
+cd "RUTA_DEL_PROYECTO"
+code .
+```
+
+Instala únicamente la extensión Remote - WSL si tu instalación de VS Code la necesita. No se requieren extensiones adicionales para ejecutar los scripts.
+
+## Estado de verificación
+
+- Código Linux: disponible en `linux/`.
+- Pruebas locales: realizadas en Amazon Linux con Node.js; no equivalen a una prueba WSL2 Ubuntu.
+- Evidencias reales WSL2: pendientes de tomar por el usuario.
+- Archivo temporal de 200 MB: eliminado después de la prueba.
+- Git: esta carpeta no tiene un repositorio configurado actualmente; no se ejecutaron comandos de inicialización ni publicación.
+
+> Para conocer el comando exacto y qué debe aparecer en cada captura, consulta `linux/COMANDOS_CAPTURAS.md`.
+
+> **[CAPTURAS PENDIENTES: evidencias/linux/]**
