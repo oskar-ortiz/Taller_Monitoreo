@@ -22,13 +22,8 @@ No ejecutar Git ni subir archivos. Las capturas deben guardarse en `evidencias/l
 18. **Ejercicio 4, inspección (Terminal B):** mientras corren, `ps -eo pid,ni,pri,cls,comm`, `top` o `htop`. Captura: `evidencias/linux/linux-cap16-ejercicio4-scheduling.png`.
 19. **Limpieza final:** compruebe `pgrep -af 'vigilante|cache.js|estres.js|prioridad.js'`; si queda algún proceso de prueba identificado, use `kill PID` y verifique de nuevo.
 
-## Lista final de capturas pendientes
+## Estado final de evidencias
 
-- cap1 sistema Linux
-- cap2 `/proc/meminfo`
-- cap3–4 ejercicio 1
-- cap5–9 ejercicio 2
-- cap10–14 ejercicio 3
-- cap15–16 ejercicio 4
+Las salidas reales de cada ejercicio están versionadas en `evidencias/linux/*.txt` y embebidas en el README. Se generó la captura gráfica real opcional `evidencias/linux/linux-captura-grafica-real.png` mediante Xvfb + xterm + ImageMagick. No quedan capturas obligatorias pendientes; la captura gráfica es opcional para presentación.
 
 El swap no está garantizado: depende de la memoria disponible y de la configuración de WSL2. `nice` ajusta prioridad en el scheduler normal/CFS; `chrt` cambia a una política de tiempo real y puede afectar más al sistema, por eso la duración es limitada.

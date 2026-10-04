@@ -29,11 +29,47 @@ node vigilante.js 0
 
 Resultado real normal: RAM `18.52%` y CPU entre `0.00%` y `1.49%`. La prueba con umbral `0%` produjo tres alertas, verificadas en `alerta_ram.txt`.
 
+**Salida real en Amazon Linux 2023, kernel 6.18.49, fecha 2026-10-02 — `cap3`:**
+
+```text
+Vigilante Linux iniciado. Umbral RAM: 80%. Ctrl+C para terminar.
+2026-10-02T00:22:57.517Z | RAM: 18.52% (793 MiB usados) | CPU: 0.00%
+2026-10-02T00:22:58.521Z | RAM: 18.52% (793 MiB usados) | CPU: 1.00%
+2026-10-02T00:22:59.523Z | RAM: 18.52% (793 MiB usados) | CPU: 1.49%
+2026-10-02T00:23:00.524Z | RAM: 18.52% (793 MiB usados) | CPU: 1.00%
+```
+
+**Salida real en Amazon Linux 2023, kernel 6.18.49, fecha 2026-10-02 — `cap4`:**
+
+```text
+Vigilante Linux iniciado. Umbral RAM: 0%. Ctrl+C para terminar.
+2026-10-02T00:23:01.511Z | RAM: 18.51% (793 MiB usados) | CPU: 0.00%
+ALERTA: RAM sobre 0%. Registro escrito en alerta_ram.txt
+2026-10-02T00:23:02.514Z | RAM: 18.51% (793 MiB usados) | CPU: 0.00%
+ALERTA: RAM sobre 0%. Registro escrito en alerta_ram.txt
+2026-10-02T00:23:03.515Z | RAM: 18.51% (793 MiB usados) | CPU: 1.00%
+ALERTA: RAM sobre 0%. Registro escrito en alerta_ram.txt
+```
+
 ### 2. Caché — cumple
 
 `linux/ejercicio2-cache/cache.js` realiza la primera lectura con `fs.readFileSync` y conserva el contenido en un `Map`; las siguientes lecturas salen del Map. Cada lectura se mide con `process.hrtime.bigint()`. La evidencia usa un archivo de `209715200` bytes (200 MiB), ignorado y eliminado después de la prueba.
 
 Resultado real: lectura de disco `215.312 ms` en la primera ejecución, después `0.048 ms` y `0.047 ms` desde el Map. El Map de la aplicación y la page cache del kernel son mecanismos distintos.
+
+**Salida real en Amazon Linux 2023, kernel 6.18.49, fecha 2026-10-02 — `cap7`:**
+
+```text
+Origen: fs.readFileSync (primera lectura lógica desde archivo)
+lectura-1: 215.312ms
+Lectura 1: 209715200 bytes; entradas en Map: 1
+Origen: Map de Node.js (memoria administrada por el proceso)
+lectura-2: 0.048ms
+Lectura 2: 209715200 bytes; entradas en Map: 1
+Origen: Map de Node.js (memoria administrada por el proceso)
+lectura-3: 0.047ms
+Lectura 3: 209715200 bytes; entradas en Map: 1
+```
 
 ### 3. Estrés y memoria virtual — cumple con límite de seguridad
 
@@ -48,6 +84,20 @@ swapon --show
 
 En la ejecución v3 se alcanzó el límite de `1,000,000` strings con uso RAM+swap de `17.01%`; se observó `SwapTotal: 2048 MiB`, `SwapFree: 2048 MiB` y liberación del array. `vmstat 1 3` mostró `si=0` y `so=0`, por lo que no hubo swapping durante esta carga. La salida de `htop` sigue indicando que no está instalado. La evidencia completa está en `evidencias/linux/v3-ejercicios-3-4-y-captura.txt`.
 
+**Salida real en Amazon Linux 2023, kernel 6.18.49, fecha 2026-10-04 — `v3`:**
+
+```text
+=== ejercicio 3 strings con swap activa ===
+Objetos: 1000000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Límite de objetos alcanzado. Memoria liberada; objetos: 0.
+=== vmstat ===
+si=0 so=0
+=== free y swap ===
+Swap: 2.0Gi 0B 2.0Gi
+/tmp/v3-swapfile file 2G 0B -2
+htop no instalado en el entorno
+```
+
 ### 4. Prioridad y scheduling — cumple parcialmente el objetivo comparable
 
 `linux/ejercicio4-prioridad/prioridad.js` ejecuta un cálculo CPU-bound durante un tiempo limitado, aplica un nice entre `-20` y `19` y permite competir con `taskset -c 0`. Los valores negativos pueden requerir privilegios. La evidencia disponible prueba `nice 19`; el entorno no aporta una prueba válida de `SCHED_FIFO` en tiempo real.
@@ -60,6 +110,15 @@ ps -eo pid,ni,pri,cls,comm
 ```
 
 La salida real disponible registró `nice 19`, duración `2.000 s` y `6,753,959,319` operaciones. La tabla `ps` mostró el proceso con `NI 19`, `PRI 0`, clase `TS`. La prueba v3 lanzó dos instancias en `taskset -c 0`: la instancia `nice 19` y la instancia solicitando `nice -20`. La tabla `ps` capturó ambas con clase `TS`; `nice -20` terminó en `3.001 s`, mientras la salida de `nice 19` fue interrumpida por el límite de la prueba. Esto demuestra la configuración observada, pero no se presenta como benchmark universal. La prueba segura `timeout 2s chrt -f 99 true` sí se intentó y devolvió `Operation not permitted`.
+
+**Salida real en Amazon Linux 2023, kernel 6.18.49, fecha 2026-10-04 — `cap15/cap16`:**
+
+```text
+PID 2443; prioridad solicitada 19; duración 2s.
+PID 2443 terminó: 2.000s, operaciones=6753959319.
+PID 2450 19 0 TS MainThread
+PID 2450 terminó: 2.000s, operaciones=6853892274.
+```
 
 ## Evidencias reales de Amazon Linux 2023
 
@@ -140,7 +199,7 @@ Repositorio: [github.com/oskar-ortiz/Taller_Monitoreo](https://github.com/oskar-
 
 Los cuatro ejercicios muestran observación de RAM/CPU, diferencia entre caché de aplicación y page cache, crecimiento controlado de memoria y efecto de nice sobre la planificación. La evidencia confirma un host Amazon Linux 2023 sin swap activa; por eso swap y tiempo real se explican y se dejan explícitamente como escenarios no demostrados en esta ejecución, sin fabricar resultados.
 
-> Estado: auditoría y documentación completadas. Swap, strings y pruebas de prioridad quedaron verificadas con salidas reales; las capturas PNG siguen pendientes porque no hay herramientas gráficas instaladas y no se fabricaron.
+> Estado: auditoría y documentación completadas. Swap, strings y pruebas de prioridad quedaron verificadas con salidas reales; queda una captura gráfica real opcional (`evidencias/linux/linux-captura-grafica-real.png`).
 
 ---
 

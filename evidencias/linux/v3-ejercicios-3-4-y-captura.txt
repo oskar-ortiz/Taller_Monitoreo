@@ -121,3 +121,6 @@ PID 1763; prioridad solicitada 19; duración 3s.
 PID 1764; prioridad solicitada -20; duración 3s.
 PID 1764 terminó: 3.001s, operaciones=6831265945.
 === capacidades graficas ===
+/usr/bin/Xvfb
+/usr/bin/xterm
+/usr/bin/import
