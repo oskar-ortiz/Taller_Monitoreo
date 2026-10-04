@@ -4,7 +4,7 @@ Taller de monitoreo de memoria, caché, estrés y prioridades de procesos para 6
 
 ## Entorno real
 
-Las evidencias disponibles fueron ejecutadas realmente en **Amazon Linux 2023.12.20260831**, kernel `6.18.49`, Node.js `v24.16.0`. No son capturas de WSL2 Ubuntu. No se fabricaron imágenes ni se editaron evidencias. En este entorno no había swap activa (`SwapTotal: 0 kB`), `htop` no estaba instalado y `drop_caches` requería privilegios; esos límites se reportan sin inventar resultados.
+Las evidencias disponibles fueron ejecutadas realmente en **Amazon Linux 2023.12.20260831**, kernel `6.18.49`, Node.js `v24.16.0`. No son capturas de WSL2 Ubuntu. No se fabricaron imágenes ni se editaron evidencias. Durante la verificación v3 se habilitó un archivo swap real de 2 GiB (`/tmp/v3-swapfile`); `chrt -f 99` fue rechazado con `Operation not permitted`, mientras `nice -n -20 true` y `taskset -c 0 true` sí pudieron ejecutarse. `htop`, `Xvfb`, `xterm`, `import` y `scrot` no están instalados en este entorno; esos límites se reportan sin inventar resultados.
 
 La carpeta `linux/` es independiente de la aplicación Next.js. Los scripts se ejecutan directamente con Node.js.
 
@@ -46,7 +46,7 @@ free -h
 swapon --show
 ```
 
-En la ejecución guardada se alcanzó el límite configurado de `5%` después de `10000` objetos; el sistema reportó `SwapTotal: 0 MiB`, por lo que no se puede afirmar que hubo swapping. `vmstat` mostró `si=0` y `so=0`. La salida de `htop` indica que no estaba instalado.
+En la ejecución v3 se alcanzó el límite de `1,000,000` strings con uso RAM+swap de `17.01%`; se observó `SwapTotal: 2048 MiB`, `SwapFree: 2048 MiB` y liberación del array. `vmstat 1 3` mostró `si=0` y `so=0`, por lo que no hubo swapping durante esta carga. La salida de `htop` sigue indicando que no está instalado. La evidencia completa está en `evidencias/linux/v3-ejercicios-3-4-y-captura.txt`.
 
 ### 4. Prioridad y scheduling — cumple parcialmente el objetivo comparable
 
@@ -59,7 +59,7 @@ timeout 10s taskset -c 0 nice -n -20 node linux/ejercicio4-prioridad/prioridad.j
 ps -eo pid,ni,pri,cls,comm
 ```
 
-La salida real disponible registró `nice 19`, duración `2.000 s` y `6,753,959,319` operaciones. La tabla `ps` mostró el proceso con `NI 19`, `PRI 0`, clase `TS`. Esto no permite concluir que una prioridad terminó antes porque las dos mediciones no fueron una pareja simultánea equivalente; se presenta como limitación, no como cifra inventada. `chrt -f 99` no se ejecutó para evitar congelar el entorno y porque requiere permisos.
+La salida real disponible registró `nice 19`, duración `2.000 s` y `6,753,959,319` operaciones. La tabla `ps` mostró el proceso con `NI 19`, `PRI 0`, clase `TS`. La prueba v3 lanzó dos instancias en `taskset -c 0`: la instancia `nice 19` y la instancia solicitando `nice -20`. La tabla `ps` capturó ambas con clase `TS`; `nice -20` terminó en `3.001 s`, mientras la salida de `nice 19` fue interrumpida por el límite de la prueba. Esto demuestra la configuración observada, pero no se presenta como benchmark universal. La prueba segura `timeout 2s chrt -f 99 true` sí se intentó y devolvió `Operation not permitted`.
 
 ## Evidencias reales de Amazon Linux 2023
 
@@ -108,7 +108,7 @@ El archivo de generación `linux-cap6-ejercicio2-generacion.txt` está vacío po
 
 ### Ejercicio 3
 
-`linux-cap10-ejercicio3-free.txt` contiene el diagnóstico de terminal de `watch`; `linux-cap11-ejercicio3-estres.txt` registró `10000` objetos, `SwapTotal: 0 MiB` y liberación del array. `linux-cap12-ejercicio3-vmstat.txt` mostró `si=0` y `so=0` en las muestras. `linux-cap13-ejercicio3-swap.txt` está vacío porque no había swap activa. `linux-cap14-ejercicio3-htop.txt` dice: `htop no instalado en el entorno`.
+`linux-cap10-ejercicio3-free.txt` contiene el diagnóstico de terminal de `watch`; la evidencia v3 (`v3-ejercicios-3-4-y-captura.txt`) registró `1,000,000` strings, `SwapTotal: 2048 MiB` y liberación del array. `linux-cap12-ejercicio3-vmstat.txt` y la salida v3 mostraron `si=0` y `so=0`. `linux-cap13-ejercicio3-swap.txt` conserva la salida histórica sin swap; la comprobación v3 confirma el archivo swap activo. `linux-cap14-ejercicio3-htop.txt` dice: `htop no instalado en el entorno`.
 
 ### Ejercicio 4
 
@@ -126,7 +126,7 @@ El archivo de generación `linux-cap6-ejercicio2-generacion.txt` está vacío po
 ## Verificación y límites
 
 - Build Next.js: ejecutar `pnpm install` y `pnpm build`; los ejercicios Linux no dependen de Next.js.
-- No hay imágenes PNG WSL2 en este repositorio: el entorno de captura Windows/WSL2 no estuvo disponible.
+- No hay imágenes PNG en este repositorio: la captura gráfica exige una terminal gráfica real y este entorno no tiene `Xvfb`, `xterm`, `import` ni `scrot`; se dejó la prueba de disponibilidad en `v3-ejercicios-3-4-y-captura.txt`. Las salidas `.txt` son la evidencia visible y no se presentan como capturas.
 - No se sube el archivo temporal de 200 MiB; `.gitignore` excluye `node_modules`, `.next`, temporales y archivos de prueba grandes.
 - Las mediciones de prioridad son observaciones de este entorno, no una garantía universal del scheduler.
 
@@ -140,7 +140,7 @@ Repositorio: [github.com/oskar-ortiz/Taller_Monitoreo](https://github.com/oskar-
 
 Los cuatro ejercicios muestran observación de RAM/CPU, diferencia entre caché de aplicación y page cache, crecimiento controlado de memoria y efecto de nice sobre la planificación. La evidencia confirma un host Amazon Linux 2023 sin swap activa; por eso swap y tiempo real se explican y se dejan explícitamente como escenarios no demostrados en esta ejecución, sin fabricar resultados.
 
-> Estado: auditoría y documentación completadas. Las capturas PNG de WSL2 siguen siendo opcionales y pendientes por falta de ese entorno real.
+> Estado: auditoría y documentación completadas. Swap, strings y pruebas de prioridad quedaron verificadas con salidas reales; las capturas PNG siguen pendientes porque no hay herramientas gráficas instaladas y no se fabricaron.
 
 ---
 

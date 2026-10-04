@@ -1,4 +1,4 @@
-# Comandos para capturas Linux (WSL2 Ubuntu)
+# Comandos para capturas Linux (Amazon Linux 2023)
 
 No ejecutar Git ni subir archivos. Las capturas deben guardarse en `evidencias/linux/` con los nombres indicados. Use una terminal para el programa y otra para observación; deje visible el título/comando y la salida solicitada.
 

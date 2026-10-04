@@ -1,0 +1,21 @@
+Entorno: PRETTY_NAME="Amazon Linux 2023.12.20260831"
+Kernel: 6.18.49
+2026-10-04T00:23:19+00:00
+uid=1000(vercel-sandbox) gid=1000(vercel-sandbox) groups=1000(vercel-sandbox)
+--- estado inicial ---
+               total        used        free      shared  buff/cache   available
+Mem:           4.2Gi       469Mi       3.2Gi       0.0Ki       528Mi       3.5Gi
+Swap:             0B          0B          0B
+--- intento swap ---
+Setting up swapspace version 1, size = 2 GiB (2147479552 bytes)
+no label, UUID=015f7ec3-9174-467c-a5e7-fe4d8b873278
+swapon: /tmp/v3-swapfile: insecure file owner 1000, 0 (root) suggested.
+NAME             TYPE SIZE USED PRIO
+/tmp/v3-swapfile file   2G   0B   -2
+--- prioridades seguras ---
+chrt: failed to set pid 0's policy: Operation not permitted
+chrt_exit=1
+nice_exit=0
+--- núcleos ---
+2
+taskset_exit=0

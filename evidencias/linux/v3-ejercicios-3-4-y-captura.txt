@@ -1,0 +1,123 @@
+=== ejercicio 3 strings con swap activa ===
+Objetos: 10000/1000000 | uso RAM+swap: 10.83% | MemAvailable: 3598 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 20000/1000000 | uso RAM+swap: 10.84% | MemAvailable: 3597 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 30000/1000000 | uso RAM+swap: 10.99% | MemAvailable: 3588 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 40000/1000000 | uso RAM+swap: 10.99% | MemAvailable: 3588 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 50000/1000000 | uso RAM+swap: 11.18% | MemAvailable: 3576 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 60000/1000000 | uso RAM+swap: 11.30% | MemAvailable: 3568 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 70000/1000000 | uso RAM+swap: 11.30% | MemAvailable: 3568 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 80000/1000000 | uso RAM+swap: 11.30% | MemAvailable: 3568 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 90000/1000000 | uso RAM+swap: 11.30% | MemAvailable: 3568 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 100000/1000000 | uso RAM+swap: 11.48% | MemAvailable: 3557 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 110000/1000000 | uso RAM+swap: 11.48% | MemAvailable: 3557 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 120000/1000000 | uso RAM+swap: 11.92% | MemAvailable: 3529 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 130000/1000000 | uso RAM+swap: 11.92% | MemAvailable: 3529 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 140000/1000000 | uso RAM+swap: 11.92% | MemAvailable: 3529 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 150000/1000000 | uso RAM+swap: 11.92% | MemAvailable: 3529 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 160000/1000000 | uso RAM+swap: 12.04% | MemAvailable: 3521 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 170000/1000000 | uso RAM+swap: 12.04% | MemAvailable: 3521 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 180000/1000000 | uso RAM+swap: 12.17% | MemAvailable: 3513 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 190000/1000000 | uso RAM+swap: 12.17% | MemAvailable: 3513 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 200000/1000000 | uso RAM+swap: 12.17% | MemAvailable: 3513 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 210000/1000000 | uso RAM+swap: 12.30% | MemAvailable: 3505 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 220000/1000000 | uso RAM+swap: 12.36% | MemAvailable: 3501 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 230000/1000000 | uso RAM+swap: 12.42% | MemAvailable: 3497 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 240000/1000000 | uso RAM+swap: 13.03% | MemAvailable: 3458 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 250000/1000000 | uso RAM+swap: 13.03% | MemAvailable: 3458 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 260000/1000000 | uso RAM+swap: 13.03% | MemAvailable: 3458 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 270000/1000000 | uso RAM+swap: 13.03% | MemAvailable: 3458 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 280000/1000000 | uso RAM+swap: 13.03% | MemAvailable: 3458 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 290000/1000000 | uso RAM+swap: 13.03% | MemAvailable: 3458 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 300000/1000000 | uso RAM+swap: 13.03% | MemAvailable: 3458 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 310000/1000000 | uso RAM+swap: 13.03% | MemAvailable: 3458 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 320000/1000000 | uso RAM+swap: 13.08% | MemAvailable: 3455 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 330000/1000000 | uso RAM+swap: 13.14% | MemAvailable: 3451 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 340000/1000000 | uso RAM+swap: 13.27% | MemAvailable: 3444 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 350000/1000000 | uso RAM+swap: 13.27% | MemAvailable: 3444 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 360000/1000000 | uso RAM+swap: 13.27% | MemAvailable: 3444 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 370000/1000000 | uso RAM+swap: 13.39% | MemAvailable: 3436 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 380000/1000000 | uso RAM+swap: 13.39% | MemAvailable: 3436 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 390000/1000000 | uso RAM+swap: 13.52% | MemAvailable: 3428 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 400000/1000000 | uso RAM+swap: 13.64% | MemAvailable: 3420 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 410000/1000000 | uso RAM+swap: 13.64% | MemAvailable: 3420 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 420000/1000000 | uso RAM+swap: 14.01% | MemAvailable: 3397 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 430000/1000000 | uso RAM+swap: 14.01% | MemAvailable: 3397 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 440000/1000000 | uso RAM+swap: 14.01% | MemAvailable: 3397 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 450000/1000000 | uso RAM+swap: 14.13% | MemAvailable: 3389 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 460000/1000000 | uso RAM+swap: 14.13% | MemAvailable: 3389 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 470000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 480000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 490000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 500000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 510000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 520000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 530000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 540000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 550000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 560000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 570000/1000000 | uso RAM+swap: 14.89% | MemAvailable: 3341 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 580000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 590000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 600000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 610000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 620000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 630000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 640000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 650000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 660000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 670000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 680000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 690000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 700000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 710000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 720000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 730000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 740000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 750000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 760000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 770000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 780000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 790000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 800000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 810000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 820000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 830000/1000000 | uso RAM+swap: 15.01% | MemAvailable: 3333 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 840000/1000000 | uso RAM+swap: 15.89% | MemAvailable: 3277 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 850000/1000000 | uso RAM+swap: 15.89% | MemAvailable: 3277 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 860000/1000000 | uso RAM+swap: 15.89% | MemAvailable: 3277 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 870000/1000000 | uso RAM+swap: 16.14% | MemAvailable: 3262 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 880000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 890000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 900000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 910000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 920000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 930000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 940000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 950000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 960000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 970000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 980000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 990000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+Objetos: 1000000/1000000 | uso RAM+swap: 17.01% | MemAvailable: 3206 MiB | SwapTotal: 2048 MiB | SwapFree: 2048 MiB
+
+Límite de objetos alcanzado. Memoria liberada; objetos: 0.
+=== vmstat ===
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 3  0      0 3281276      0 543248    0    0   224    25  217  314  2  1 96  0  1
+ 0  0      0 3295764      0 543316    0    0     0     0  740 1051  1  0 99  0  0
+ 0  0      0 3305204      0 543316    0    0     0     4  632  789  1  1 99  0  0
+=== free y swap ===
+               total        used        free      shared  buff/cache   available
+Mem:           4.2Gi       525Mi       3.2Gi       0.0Ki       530Mi       3.5Gi
+Swap:          2.0Gi          0B       2.0Gi
+NAME             TYPE SIZE USED PRIO
+/tmp/v3-swapfile file   2G   0B   -2
+=== ejercicio 4 prioridad ===
+    PID  NI PRI CLS COMMAND
+    221   0  19  TS node
+    308   0  19  TS node
+PID 1763; prioridad solicitada 19; duración 3s.
+PID 1764; prioridad solicitada -20; duración 3s.
+PID 1764 terminó: 3.001s, operaciones=6831265945.
+=== capacidades graficas ===
