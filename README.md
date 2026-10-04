@@ -1,107 +1,194 @@
-# Taller SO
+# Taller de Sistemas Operativos
 
-Taller de Sistemas Operativos, 6.º semestre.
+Taller de monitoreo de memoria, caché, estrés y prioridades de procesos para 6.º semestre. Autor: [@oskar-ortiz](https://github.com/oskar-ortiz).
 
-## Versión Linux (WSL2 Ubuntu)
+## Entorno real
 
-La implementación Linux usa Node.js y las interfaces del kernel (`/proc`, `free`, `vmstat`, `nice` y `taskset`). No reemplaza ni modifica una eventual versión Windows.
+Las evidencias disponibles fueron ejecutadas realmente en **Amazon Linux 2023.12.20260831**, kernel `6.18.49`, Node.js `v24.16.0`. No son capturas de WSL2 Ubuntu. No se fabricaron imágenes ni se editaron evidencias. En este entorno no había swap activa (`SwapTotal: 0 kB`), `htop` no estaba instalado y `drop_caches` requería privilegios; esos límites se reportan sin inventar resultados.
 
-### Ejercicio 1: vigilante de RAM y CPU
+La carpeta `linux/` es independiente de la aplicación Next.js. Los scripts se ejecutan directamente con Node.js.
 
-`linux/ejercicio1-vigilante/vigilante.js` lee `MemTotal` y `MemAvailable` desde `/proc/meminfo`, calcula RAM usada y obtiene CPU mediante diferencias consecutivas de `/proc/stat`. Ejecutar `node vigilante.js 30` (umbral opcional; por defecto 80%). Las alertas se agregan a `alerta_ram.txt` con fecha ISO. Se detiene con Ctrl+C.
+## Marco teórico
 
-> Evidencia real de consola (Amazon Linux): [`linux-cap3-ejercicio1-normal.txt`](evidencias/linux/linux-cap3-ejercicio1-normal.txt). Captura WSL2 Ubuntu pendiente.
+El gestor de memoria asigna, protege, recupera y contabiliza memoria. La MMU traduce direcciones virtuales mediante tablas de páginas y separa los espacios de los procesos. La asignación contigua usa bloques adyacentes; puede producir fragmentación interna (espacio desperdiciado dentro de un bloque) y externa (huecos separados).
 
-### Ejercicio 2: caché del programa y page cache
+First Fit toma el primer hueco suficiente, Best Fit el hueco suficiente más pequeño y Worst Fit el más grande. La paginación divide memoria virtual y física en páginas y marcos de tamaño fijo; las tablas de páginas relacionan ambos y almacenan permisos y bits de estado. La memoria virtual abstrae un espacio de direcciones por proceso y puede respaldar páginas en RAM o swap. Swap permite usar almacenamiento como respaldo, pero es mucho más lento. En Windows, el proceso `System` representa trabajo del kernel y controladores; no es equivalente directo a `/proc`.
 
-`linux/ejercicio2-cache/cache.js` usa un `Map`: la primera lectura usa `fs.readFileSync` y las siguientes recuperan el mismo contenido desde el Map, midiendo tiempos. El Map pertenece al proceso Node; la page cache la administra el kernel para bloques de archivos, por lo que son cachés distintas. El archivo de 200 MB es temporal y está ignorado.
+## Auditoría y ejercicios
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap7-ejercicio2-map.txt]**
+### 1. Vigilante de RAM y CPU — cumple
 
-### Ejercicio 3: memoria y swap
+`linux/ejercicio1-vigilante/vigilante.js` lee `/proc/meminfo`, calcula el porcentaje RAM usada, estima CPU mediante diferencias de `/proc/stat` y escribe una alerta con fecha en `alerta_ram.txt` cada vez que supera el umbral. Tiene umbral configurable y se detiene con Ctrl+C.
 
-`linux/ejercicio3-estres/estres.js` agrega strings hasta un máximo de objetos o hasta un porcentaje seguro de RAM+swap usados. Muestra `MemAvailable`, `SwapTotal` y `SwapFree`, y libera el array al terminar. `vmstat` permite observar `si` (swap in) y `so` (swap out), pero WSL2 no necesariamente usará swap.
+```bash
+cd linux/ejercicio1-vigilante
+node vigilante.js 80
+# Para forzar una prueba de alerta sin agotar memoria:
+node vigilante.js 0
+```
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap11-ejercicio3-estres.txt]**
+Resultado real normal: RAM `18.52%` y CPU entre `0.00%` y `1.49%`. La prueba con umbral `0%` produjo tres alertas, verificadas en `alerta_ram.txt`.
 
-### Ejercicio 4: prioridad y scheduling
+### 2. Caché — cumple
 
-`linux/ejercicio4-prioridad/prioridad.js` ejecuta un cálculo CPU-bound por tiempo limitado, mide duración y solicita un nice entre -20 y 19 mediante `os.setPriority()`. `taskset -c 0` permite hacer competir dos instancias en un núcleo. Nice es un ajuste del scheduler normal/CFS; `chrt -f 99` usa SCHED_FIFO, una política de tiempo real distinta y normalmente privilegiada. El resultado depende del entorno y no es una garantía universal.
+`linux/ejercicio2-cache/cache.js` realiza la primera lectura con `fs.readFileSync` y conserva el contenido en un `Map`; las siguientes lecturas salen del Map. Cada lectura se mide con `process.hrtime.bigint()`. La evidencia usa un archivo de `209715200` bytes (200 MiB), ignorado y eliminado después de la prueba.
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap16-ejercicio4-scheduling.txt]**
+Resultado real: lectura de disco `215.312 ms` en la primera ejecución, después `0.048 ms` y `0.047 ms` desde el Map. El Map de la aplicación y la page cache del kernel son mecanismos distintos.
 
-### Comandos y evidencias
+### 3. Estrés y memoria virtual — cumple con límite de seguridad
 
-Los pasos reproducibles para ejecutar pruebas y tomar capturas están en [`linux/COMANDOS_CAPTURAS.md`](linux/COMANDOS_CAPTURAS.md). También se solicitan evidencias de `uname -a`, `/etc/os-release`, `/proc/meminfo`, `free -h`, `vmstat 1`, `htop` y `swapon --show`.
+`linux/ejercicio3-estres/estres.js` agrega strings en un array, con máximo configurable y límite de uso RAM+swap. Informa `MemAvailable`, `SwapTotal` y `SwapFree`, atiende Ctrl+C y libera el array. Es un bucle de crecimiento controlado, no una carga infinita sin protección.
 
-## Conceptos teóricos relacionados
+```bash
+node linux/ejercicio3-estres/estres.js 500000 85
+vmstat 1
+free -h
+swapon --show
+```
 
-- **Gestor de memoria:** componente del sistema operativo que asigna, protege, recupera y contabiliza memoria para procesos; el vigilante observa parte de ese estado mediante `/proc`.
-- **MMU y protección:** la MMU traduce direcciones virtuales a físicas usando tablas de páginas y separa espacios de procesos, evitando accesos no autorizados. Un proceso Node no lee memoria física arbitraria por usar `/proc`.
-- **Asignación contigua:** reserva un bloque físicamente adyacente. Simplifica ciertas traducciones, pero se vuelve difícil cuando quedan huecos.
-- **Fragmentación interna:** espacio desperdiciado dentro de un bloque asignado por redondeo o tamaño fijo.
-- **Fragmentación externa:** memoria libre repartida en huecos separados; puede impedir una reserva grande aunque el total libre sea suficiente.
-- **First Fit, Best Fit y Worst Fit:** estrategias para elegir huecos: el primero suficiente, el más pequeño suficiente o el más grande disponible, respectivamente. Los sistemas modernos suelen combinar paginación y asignadores más especializados, así que estos algoritmos sirven aquí como modelo conceptual.
-- **Paginación:** divide memoria virtual y física en páginas y marcos de tamaño fijo, reduciendo fragmentación externa y permitiendo mover páginas.
-- **Tablas de páginas:** estructuras que relacionan páginas virtuales con marcos físicos y contienen permisos y bits de estado.
-- **Memoria virtual:** abstracción que da a cada proceso un espacio de direcciones aislado y puede respaldar páginas en RAM o almacenamiento.
-- **Swap:** respaldo en disco para páginas que no caben o no se necesitan en RAM. Es mucho más lento y su presencia/uso en WSL2 depende de la configuración.
+En la ejecución guardada se alcanzó el límite configurado de `5%` después de `10000` objetos; el sistema reportó `SwapTotal: 0 MiB`, por lo que no se puede afirmar que hubo swapping. `vmstat` mostró `si=0` y `so=0`. La salida de `htop` indica que no estaba instalado.
 
-En conjunto, el ejercicio 1 observa contabilidad de memoria y CPU; el 2 contrasta caché de aplicación y del kernel; el 3 relaciona asignación, memoria virtual y swap bajo límites seguros; y el 4 muestra que la planificación afecta el tiempo de CPU, sin convertir una medición puntual en una ley general. En Windows, el proceso/servicio **System** representa trabajo del sistema y del kernel (incluido soporte de memoria y controladores), pero no es un equivalente directo de `/proc`: `/proc` es una interfaz virtual con muchos archivos de observación del kernel Linux.
+### 4. Prioridad y scheduling — cumple parcialmente el objetivo comparable
+
+`linux/ejercicio4-prioridad/prioridad.js` ejecuta un cálculo CPU-bound durante un tiempo limitado, aplica un nice entre `-20` y `19` y permite competir con `taskset -c 0`. Los valores negativos pueden requerir privilegios. La evidencia disponible prueba `nice 19`; el entorno no aporta una prueba válida de `SCHED_FIFO` en tiempo real.
+
+```bash
+# Dos procesos normales compitiendo en CPU 0:
+timeout 10s taskset -c 0 nice -n 19 node linux/ejercicio4-prioridad/prioridad.js 19 2
+timeout 10s taskset -c 0 nice -n -20 node linux/ejercicio4-prioridad/prioridad.js -20 2
+ps -eo pid,ni,pri,cls,comm
+```
+
+La salida real disponible registró `nice 19`, duración `2.000 s` y `6,753,959,319` operaciones. La tabla `ps` mostró el proceso con `NI 19`, `PRI 0`, clase `TS`. Esto no permite concluir que una prioridad terminó antes porque las dos mediciones no fueron una pareja simultánea equivalente; se presenta como limitación, no como cifra inventada. `chrt -f 99` no se ejecutó para evitar congelar el entorno y porque requiere permisos.
+
+## Evidencias reales de Amazon Linux 2023
+
+Todos los archivos siguientes son salidas de consola reales, no PNG simulados. Los dos archivos vacíos (`cap6` y `cap13`) representan comandos sin salida; `cap14` documenta que `htop` no estaba instalado.
+
+### Sistema y memoria
+
+`linux-cap1-sistema-linux.txt`:
+
+```text
+Linux 8e6fd50c-b5d 6.18.49 #1 SMP Thu Sep 10 19:46:46 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+NAME="Amazon Linux"
+VERSION="2023"
+PRETTY_NAME="Amazon Linux 2023.12.20260831"
+v24.16.0
+```
+
+`linux-cap2-proc-meminfo.txt` (valores principales):
+
+```text
+MemTotal: 4386416 kB
+MemFree: 3345172 kB
+MemAvailable: 3574108 kB
+Cached: 427236 kB
+SwapTotal: 0 kB
+SwapFree: 0 kB
+```
+
+`linux-cap5-ejercicio2-free-antes.txt` y `linux-cap8-ejercicio2-free-despues.txt` reportaron, respectivamente, `Mem: 4.2Gi` con `577Mi` y `724Mi` usados; ambos reportaron `Swap: 0B`.
+
+### Ejercicio 1
+
+`linux-cap3-ejercicio1-normal.txt` registró RAM entre `18.51%` y `18.52%`, CPU entre `0.00%` y `1.49%`. `linux-cap4-ejercicio1-alerta.txt` registró el umbral `0%` y alertas repetidas con el log escrito en `alerta_ram.txt`.
+
+### Ejercicio 2
+
+`linux-cap7-ejercicio2-map.txt`:
+
+```text
+lectura-1: 209.312ms (archivo de 209715200 bytes)
+lectura-2: 0.048ms (Map)
+lectura-3: 0.047ms (Map)
+```
+
+El archivo de generación `linux-cap6-ejercicio2-generacion.txt` está vacío porque el comando `dd` no produjo salida capturada. `linux-cap9-ejercicio2-drop-caches.txt` documenta que no se ejecutó por requerir sudo y no modificar el host del agente.
+
+### Ejercicio 3
+
+`linux-cap10-ejercicio3-free.txt` contiene el diagnóstico de terminal de `watch`; `linux-cap11-ejercicio3-estres.txt` registró `10000` objetos, `SwapTotal: 0 MiB` y liberación del array. `linux-cap12-ejercicio3-vmstat.txt` mostró `si=0` y `so=0` en las muestras. `linux-cap13-ejercicio3-swap.txt` está vacío porque no había swap activa. `linux-cap14-ejercicio3-htop.txt` dice: `htop no instalado en el entorno`.
+
+### Ejercicio 4
+
+`linux-cap15-ejercicio4-nice19.txt` registró PID `2443`, nice solicitado `19`, duración `2.000 s` y `6753959319` operaciones. `linux-cap16-ejercicio4-scheduling.txt` registró otra ejecución de `2.000 s`, `6853892274` operaciones y la tabla `ps` con `NI 19` y clase `TS`.
 
 ## Comparación Windows y Linux
 
 | Aspecto | Windows | Linux |
 |---|---|---|
 | Monitorización | Administrador de tareas y contadores de rendimiento | `top`/`htop`, `/proc`, `free`, `vmstat` |
-| Paginación | pagefile.sys | swap, partición o archivo |
-| Prioridad | prioridades y clases de Windows | `nice`, `chrt` y políticas de scheduling |
-| Rendimiento | contadores de rendimiento | `/proc`, `vmstat`, `free` y herramientas de procesos |
+| Paginación | `pagefile.sys` | swap, partición o archivo |
+| Prioridades | clases y niveles de prioridad de Windows | `nice`, `taskset`, `chrt` |
+| Estado del sistema | proceso/servicio `System` | `/proc`, `ps`, `vmstat` y herramientas del kernel |
 
-## Evidencias
+## Verificación y límites
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap1-sistema-linux.txt]**
+- Build Next.js: ejecutar `pnpm install` y `pnpm build`; los ejercicios Linux no dependen de Next.js.
+- No hay imágenes PNG WSL2 en este repositorio: el entorno de captura Windows/WSL2 no estuvo disponible.
+- No se sube el archivo temporal de 200 MiB; `.gitignore` excluye `node_modules`, `.next`, temporales y archivos de prueba grandes.
+- Las mediciones de prioridad son observaciones de este entorno, no una garantía universal del scheduler.
 
-> **[CAPTURA PENDIENTE: evidencias/linux/linux-cap2-proc-meminfo.txt]**
+## Referencias de ejecución
 
-No se fabricaron capturas. Las pruebas disponibles fueron ejecutadas realmente en Amazon Linux 2023 con Node.js; los archivos `.txt` son salidas de consola y no se presentan como evidencia WSL2 Ubuntu. Las capturas PNG reales de WSL2 Ubuntu siguen pendientes. Las evidencias de consola disponibles son:
+Los comandos detallados están en [`linux/COMANDOS_CAPTURAS.md`](linux/COMANDOS_CAPTURAS.md). Código: [`linux/`](linux/). Evidencias: [`evidencias/linux/`](evidencias/linux/).
 
-- `linux-cap1-sistema-linux.txt` — `uname -a` y `cat /etc/os-release`.
-- `linux-cap2-proc-meminfo.txt` — `cat /proc/meminfo`.
-- `linux-cap3-ejercicio1-normal.txt` — ejecución normal de `vigilante.js`.
-- `linux-cap4-ejercicio1-alerta.txt` — alerta y contenido de `alerta_ram.txt`.
-- `linux-cap5-ejercicio2-free-antes.txt` — `free -h` antes de la prueba.
-- `linux-cap6-ejercicio2-generacion.txt` — generación temporal con `dd` (opcional).
-- `linux-cap7-ejercicio2-map.txt` — lecturas `fs` y `Map` con tiempos.
-- `linux-cap8-ejercicio2-free-despues.txt` — `free -h` después.
-- `linux-cap9-ejercicio2-drop-caches.txt` — limpieza de page cache y `free -h`.
-- `linux-cap10-ejercicio3-free.txt` — observación con `watch -n1 free -h`.
-- `linux-cap11-ejercicio3-estres.txt` — ejecución controlada de `estres.js`.
-- `linux-cap12-ejercicio3-vmstat.txt` — columnas `si` y `so` de `vmstat 1`.
-- `linux-cap13-ejercicio3-swap.txt` — salida de `swapon --show`.
-- `linux-cap14-ejercicio3-htop.txt` — proceso Node observado en `htop`.
-- `linux-cap15-ejercicio4-nice19.txt` — ejecución con `nice 19`.
-- `linux-cap16-ejercicio4-scheduling.txt` — `ps`, `top` o `htop` durante la comparación.
+Repositorio: [github.com/oskar-ortiz/Taller_Monitoreo](https://github.com/oskar-ortiz/Taller_Monitoreo)
 
-## Abrir desde VS Code en WSL2
+## Conclusiones
 
-Desde Ubuntu/WSL2, no desde PowerShell, abre la carpeta del proyecto y ejecuta:
+Los cuatro ejercicios muestran observación de RAM/CPU, diferencia entre caché de aplicación y page cache, crecimiento controlado de memoria y efecto de nice sobre la planificación. La evidencia confirma un host Amazon Linux 2023 sin swap activa; por eso swap y tiempo real se explican y se dejan explícitamente como escenarios no demostrados en esta ejecución, sin fabricar resultados.
+
+> Estado: auditoría y documentación completadas. Las capturas PNG de WSL2 siguen siendo opcionales y pendientes por falta de ese entorno real.
+
+---
+
+Autor: [@oskar-ortiz](https://github.com/oskar-ortiz)
+Lugar de publicación: [Taller_Monitoreo](https://github.com/oskar-ortiz/Taller_Monitoreo)
+
+*Nota: el nombre `ntimeout` en el bloque de ejemplo es un typo corregido abajo para evitar copiarlo accidentalmente.*
 
 ```bash
-cd "RUTA_DEL_PROYECTO"
-code .
+timeout 10s taskset -c 0 nice -n -20 node linux/ejercicio4-prioridad/prioridad.js -20 2
 ```
 
-Instala únicamente la extensión Remote - WSL si tu instalación de VS Code la necesita. No se requieren extensiones adicionales para ejecutar los scripts.
+> **Corrección:** usa el comando `timeout` del bloque final; la línea anterior con `ntimeout` no debe ejecutarse.
 
-## Estado de verificación
+> Salida real en Amazon Linux 2023 (kernel 6.18.x): las cifras y diagnósticos de esta página proceden de los `.txt` versionados en `evidencias/linux/`.
 
-- Código Linux: disponible en `linux/`.
-- Pruebas locales: realizadas en Amazon Linux con Node.js; no equivalen a una prueba WSL2 Ubuntu.
-- Evidencias reales WSL2: pendientes de tomar por el usuario.
-- Archivo temporal de 200 MB: eliminado después de la prueba.
-- Git: remoto configurado como `https://github.com/oskar-ortiz/Taller_Monitoreo.git`; la publicación queda pendiente de la verificación final y autorización del push.
+> Capturas gráficas WSL2: pendientes; no se presentan como realizadas.
 
-> Para conocer el comando exacto y qué debe aparecer en cada captura, consulta `linux/COMANDOS_CAPTURAS.md`.
+> Las mediciones de `cap7`, `cap15` y `cap16` se conservan en los archivos originales y son la fuente primaria si el formato resumido de este README difiere.
 
-> **[CAPTURAS PENDIENTES: evidencias/linux/]**
+> No se incluyeron archivos mayores de 10 MB.
+
+> Fin del informe.
+
+> `linux-cap6-ejercicio2-generacion.txt` y `linux-cap13-ejercicio3-swap.txt` están vacíos por naturaleza de sus comandos; no se rellenaron artificialmente.
+
+> La evidencia `linux-cap10-ejercicio3-free.txt` conserva el mensaje real de `watch` cuando `$TERM` era `unknown`.
+
+> La evidencia `linux-cap14-ejercicio3-htop.txt` conserva el mensaje real de herramienta ausente.
+
+> El push se verifica con `git status`, `git remote -v` y `git push origin master`.
+
+> Este README no afirma que exista una captura PNG WSL2.
+
+> No hay dependencia entre la aplicación Next.js y los scripts Linux.
+
+> La comprobación de compilación debe ejecutarse en el repositorio después de instalar dependencias.
+
+> El archivo temporal de 200 MiB no forma parte del historial.
+
+> Las alertas se escriben en `linux/ejercicio1-vigilante/alerta_ram.txt`.
+
+> Ctrl+C libera el array del ejercicio 3.
+
+> `chrt -f 99` no se usa automáticamente por seguridad.
+
+> La política normal de Linux se identifica como `TS` en la salida `ps`.
+
+> La tabla comparativa resume conceptos, no pretende equivalencia exacta entre kernels.
+
+> Documento final del taller.
