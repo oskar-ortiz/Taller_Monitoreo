@@ -185,9 +185,13 @@ El archivo de generación `linux-cap6-ejercicio2-generacion.txt` está vacío po
 ## Verificación y límites
 
 - Build Next.js: ejecutar `pnpm install` y `pnpm build`; los ejercicios Linux no dependen de Next.js.
-- No hay imágenes PNG en este repositorio: la captura gráfica exige una terminal gráfica real y este entorno no tiene `Xvfb`, `xterm`, `import` ni `scrot`; se dejó la prueba de disponibilidad en `v3-ejercicios-3-4-y-captura.txt`. Las salidas `.txt` son la evidencia visible y no se presentan como capturas.
+- Las salidas de consola versionadas en `evidencias/linux/` son archivos de texto; `linux-captura-grafica-real.png` es una captura gráfica real de Amazon Linux. El informe académico enlazado abajo incluye, por separado, la captura WSL2 proporcionada para documentar los ejercicios 2, 3 y 4.
 - No se sube el archivo temporal de 200 MiB; `.gitignore` excluye `node_modules`, `.next`, temporales y archivos de prueba grandes.
 - Las mediciones de prioridad son observaciones de este entorno, no una garantía universal del scheduler.
+
+## Informe académico
+
+El [informe final del taller](./Informe_Taller_SO_APA7.docx) reúne el marco teórico, el desarrollo de los cuatro ejercicios, las evidencias disponibles, los resultados y sus limitaciones. Distingue los resultados preliminares de Amazon Linux de la captura WSL2, y señala los datos que no pudieron verificarse.
 
 ## Referencias de ejecución
 
@@ -197,57 +201,9 @@ Repositorio: [github.com/oskar-ortiz/Taller_Monitoreo](https://github.com/oskar-
 
 ## Conclusiones
 
-Los cuatro ejercicios muestran observación de RAM/CPU, diferencia entre caché de aplicación y page cache, crecimiento controlado de memoria y efecto de nice sobre la planificación. La evidencia confirma un host Amazon Linux 2023 sin swap activa; por eso swap y tiempo real se explican y se dejan explícitamente como escenarios no demostrados en esta ejecución, sin fabricar resultados.
-
-> Estado: auditoría y documentación completadas. Swap, strings y pruebas de prioridad quedaron verificadas con salidas reales; queda una captura gráfica real opcional (`evidencias/linux/linux-captura-grafica-real.png`).
+Los ejercicios permiten observar el monitoreo de RAM/CPU, la diferencia entre la caché de la aplicación y la page cache, el crecimiento controlado de memoria y el efecto de nice sobre la planificación. Las evidencias del repositorio corresponden a Amazon Linux 2023; el informe académico incorpora aparte una captura de WSL2 y declara explícitamente las limitaciones y discrepancias que no pudieron verificarse.
 
 ---
 
 Autor: [@oskar-ortiz](https://github.com/oskar-ortiz)
 Lugar de publicación: [Taller_Monitoreo](https://github.com/oskar-ortiz/Taller_Monitoreo)
-
-*Nota: el nombre `ntimeout` en el bloque de ejemplo es un typo corregido abajo para evitar copiarlo accidentalmente.*
-
-```bash
-timeout 10s taskset -c 0 nice -n -20 node linux/ejercicio4-prioridad/prioridad.js -20 2
-```
-
-> **Corrección:** usa el comando `timeout` del bloque final; la línea anterior con `ntimeout` no debe ejecutarse.
-
-> Salida real en Amazon Linux 2023 (kernel 6.18.x): las cifras y diagnósticos de esta página proceden de los `.txt` versionados en `evidencias/linux/`.
-
-> Capturas gráficas WSL2: pendientes; no se presentan como realizadas.
-
-> Las mediciones de `cap7`, `cap15` y `cap16` se conservan en los archivos originales y son la fuente primaria si el formato resumido de este README difiere.
-
-> No se incluyeron archivos mayores de 10 MB.
-
-> Fin del informe.
-
-> `linux-cap6-ejercicio2-generacion.txt` y `linux-cap13-ejercicio3-swap.txt` están vacíos por naturaleza de sus comandos; no se rellenaron artificialmente.
-
-> La evidencia `linux-cap10-ejercicio3-free.txt` conserva el mensaje real de `watch` cuando `$TERM` era `unknown`.
-
-> La evidencia `linux-cap14-ejercicio3-htop.txt` conserva el mensaje real de herramienta ausente.
-
-> El push se verifica con `git status`, `git remote -v` y `git push origin master`.
-
-> Este README no afirma que exista una captura PNG WSL2.
-
-> No hay dependencia entre la aplicación Next.js y los scripts Linux.
-
-> La comprobación de compilación debe ejecutarse en el repositorio después de instalar dependencias.
-
-> El archivo temporal de 200 MiB no forma parte del historial.
-
-> Las alertas se escriben en `linux/ejercicio1-vigilante/alerta_ram.txt`.
-
-> Ctrl+C libera el array del ejercicio 3.
-
-> `chrt -f 99` no se usa automáticamente por seguridad.
-
-> La política normal de Linux se identifica como `TS` en la salida `ps`.
-
-> La tabla comparativa resume conceptos, no pretende equivalencia exacta entre kernels.
-
-> Documento final del taller.
